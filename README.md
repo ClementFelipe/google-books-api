@@ -94,3 +94,5 @@ After this, the API will become available on port 8080.
 Tests can be run with:
 
 `mvn test`
+
+This project has only one test, an end to end test of all the API endpoints in a simulated user flow.
