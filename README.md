@@ -72,3 +72,25 @@ Any other value for `scope` will be interpreted as a search across all volumes.
 Depending on the value of `isFavorite` (true|false), this endpoint may either add the volume to the users `Favorites` bookshelf or remove it.
 
 This endpoint does not return a response body.
+
+## Building locally
+
+To build and run this project, you must have maven installed and at least Java 11.
+
+Run:
+
+`mvn package`
+
+To generate the `target` directory with the executable standalone JAR file for the API.
+
+Then, the JAR can be run with:
+
+`java -jar target/google-books-search-api-0.0.1-SNAPSHOT.jar`
+
+After this, the API will become available on port 8080.
+
+### Tests
+
+Tests can be run with:
+
+`mvn test`

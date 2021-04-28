@@ -23,7 +23,7 @@ public class GoogleBooksGateway {
   public java.util.List<Volume> getVolumesByQuery(String query, String printType) throws IOException, GeneralSecurityException {
     final Books booksClient = new Books.Builder(GoogleNetHttpTransport.newTrustedTransport(), JacksonFactory.getDefaultInstance(), null)
       .setApplicationName(null)
-      .setGoogleClientRequestInitializer(new BooksRequestInitializer("AIzaSyBdGr8xl4kR_hO6_dzDNwv5fTvePn6ppRg"))
+      .setGoogleClientRequestInitializer(new BooksRequestInitializer(null))
       .build();
 
     Volumes volumes = booksClient
