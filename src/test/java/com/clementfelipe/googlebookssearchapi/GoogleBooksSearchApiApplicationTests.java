@@ -29,7 +29,7 @@ import org.springframework.http.ResponseEntity;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class GoogleBooksSearchApiApplicationTests {
 
-	private static final String USER_TOKEN = "ya29.a0AfH6SMDjNwQGx98-nU21PGXuz8hUcr7R7SaatIab12aZ3NvIYMPSt7G6-qb7P-Nd6ZcySemtDko1e-vDF5i63blcgLa0jPdoi6zy2aiUORnyWNA3t5WQeLfudqhuuUmA8iMpHmHddTB-DP2D0e5UMTHKgrjPHA"; // This should be an OAuth2 access token granted by google for the app
+	private static final String USER_TOKEN = ""; // This should be an OAuth2 access token granted by google for the app
 
 	@LocalServerPort
 	private int port;
