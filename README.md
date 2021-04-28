@@ -21,7 +21,7 @@ There are two resources in this API: `bookshelf` and `volume`,
 
 This resource has the following structure:
 
-```json
+```js
 {
   id: number, // numeric id given by Google Books API
   title: string // title (name) of the bookshelf
@@ -42,7 +42,7 @@ Obtains the volumes in a given bookshelf for the user.
 
 This resource has the following structure:
 
-```json
+```js
 {
   id: string, // alphanumeric id given by Google Books API
   title: string, // title of the volume
