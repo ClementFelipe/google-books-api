@@ -11,8 +11,8 @@ import com.clementfelipe.googlebookssearchapi.gateway.GoogleBooksGateway;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,13 +26,13 @@ public class VolumeController {
   @GetMapping("/volume")
   public List<VolumeDTO> get(
     @RequestParam String query,
-    @RequestParam(required = false) String scope,
+    @RequestParam(required = false, defaultValue = "") String scope,
     @RequestHeader(name = "authorization", required = false) String userToken
   ) throws GeneralSecurityException, IOException {
 
     final Set<String> userFavoriteVolumes = userToken == null
       ? new HashSet<>()
-      : googleBooksGateway.getUserBookshelfVolumes("0", userToken).stream()
+      : googleBooksGateway.getUserBookshelfVolumes("0", TokenUtils.removeTokenPrefix(userToken)).stream()
           .map(v -> v.getId()).collect(Collectors.toSet());
 
     String printType = scope.equals("magazines") ? "magazines" : "all";
@@ -43,17 +43,19 @@ public class VolumeController {
       .collect(Collectors.toList());
   }
 
-  @PatchMapping("/volume/{volumeId}/favorite/{isFavorite}")
+  @PutMapping("/volume/{volumeId}/favorite/{isFavorite}")
   public void setFavorite(
     @PathVariable String volumeId,
     @PathVariable Boolean isFavorite,
-    @RequestHeader("authorization") String userToken
+    @RequestHeader(name = "authorization", required = true) String userToken
   ) throws GeneralSecurityException, IOException {
 
+    String parsedToken = TokenUtils.removeTokenPrefix(userToken);
+
     if (isFavorite) {
-      googleBooksGateway.addVolumeToBookshelf(volumeId, "0", userToken);
+      googleBooksGateway.addVolumeToBookshelf(volumeId, "0", parsedToken);
     } else {
-      googleBooksGateway.removeVolumeFromBookshelf(volumeId, "0", userToken);
+      googleBooksGateway.removeVolumeFromBookshelf(volumeId, "0", parsedToken);
     }
   }
 

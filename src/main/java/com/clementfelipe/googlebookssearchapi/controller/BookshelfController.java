@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController()
 public class BookshelfController {
   
   @Autowired
@@ -22,22 +24,23 @@ public class BookshelfController {
 
   @GetMapping("/bookshelf")
   public List<BookshelfDTO> setFavorite(
-    @RequestHeader("authorization") String userToken
+    @RequestHeader(name = "authorization", required = true) String userToken
   ) throws GeneralSecurityException, IOException {
 
-    List<Bookshelf> bookshelves = googleBooksGateway.getUserBookshelves(userToken);
+    List<Bookshelf> bookshelves = googleBooksGateway.getUserBookshelves(TokenUtils.removeTokenPrefix(userToken));
 
     return bookshelves.stream().map(b -> BookshelfDTO.fromClientBookshelf(b)).collect(Collectors.toList());
   }
 
-  @GetMapping("/bookshelf/{bookshelfId}/volumes")
+  @GetMapping("/bookshelf/{bookshelfId}/volume")
   public List<VolumeDTO> setFavorite(
     @PathVariable String bookshelfId,
-    @RequestHeader("authorization") String userToken
+    @RequestHeader(name = "authorization", required = true) String userToken
   ) throws GeneralSecurityException, IOException {
 
-    List<Volume> volumes = googleBooksGateway.getUserBookshelfVolumes(bookshelfId, userToken);
+    List<Volume> volumes = googleBooksGateway.getUserBookshelfVolumes(bookshelfId, TokenUtils.removeTokenPrefix(userToken));
 
     return volumes.stream().map(v -> VolumeDTO.fromClientVolume(v, new HashSet<>())).collect(Collectors.toList());
   }
+
 }
