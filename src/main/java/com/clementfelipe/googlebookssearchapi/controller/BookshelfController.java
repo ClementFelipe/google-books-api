@@ -27,7 +27,7 @@ public class BookshelfController {
     @RequestHeader(name = "authorization", required = true) String userToken
   ) throws GeneralSecurityException, IOException {
 
-    List<Bookshelf> bookshelves = googleBooksGateway.getUserBookshelves(TokenUtils.removeTokenPrefix(userToken));
+    List<Bookshelf> bookshelves = googleBooksGateway.getUserBookshelves(TokenValidator.validateAndParse(userToken));
 
     return bookshelves.stream().map(b -> BookshelfDTO.fromClientBookshelf(b)).collect(Collectors.toList());
   }
@@ -38,7 +38,7 @@ public class BookshelfController {
     @RequestHeader(name = "authorization", required = true) String userToken
   ) throws GeneralSecurityException, IOException {
 
-    List<Volume> volumes = googleBooksGateway.getUserBookshelfVolumes(bookshelfId, TokenUtils.removeTokenPrefix(userToken));
+    List<Volume> volumes = googleBooksGateway.getUserBookshelfVolumes(bookshelfId, TokenValidator.validateAndParse(userToken));
 
     return volumes.stream().map(v -> VolumeDTO.fromClientVolume(v, new HashSet<>())).collect(Collectors.toList());
   }

@@ -32,7 +32,7 @@ public class VolumeController {
 
     final Set<String> userFavoriteVolumes = userToken == null
       ? new HashSet<>()
-      : googleBooksGateway.getUserBookshelfVolumes("0", TokenUtils.removeTokenPrefix(userToken)).stream()
+      : googleBooksGateway.getUserBookshelfVolumes("0", TokenValidator.validateAndParse(userToken)).stream()
           .map(v -> v.getId()).collect(Collectors.toSet());
 
     String printType = scope.equals("magazines") ? "magazines" : "all";
@@ -50,7 +50,7 @@ public class VolumeController {
     @RequestHeader(name = "authorization", required = true) String userToken
   ) throws GeneralSecurityException, IOException {
 
-    String parsedToken = TokenUtils.removeTokenPrefix(userToken);
+    String parsedToken = TokenValidator.validateAndParse(userToken);
 
     if (isFavorite) {
       googleBooksGateway.addVolumeToBookshelf(volumeId, "0", parsedToken);
